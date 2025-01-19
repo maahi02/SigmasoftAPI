@@ -30,6 +30,7 @@ builder.Services.AddSwaggerGen(c =>
 var app = builder.Build();
 
 
+// Migration run on start
 using (IServiceScope? scope = app.Services.CreateScope())
 {
     var service = scope.ServiceProvider;
