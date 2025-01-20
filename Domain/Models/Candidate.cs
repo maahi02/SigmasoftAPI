@@ -9,17 +9,31 @@ namespace Domain.Models
 {
     public class Candidate
     {
-        [Key]
-        public Guid Id { get; set; } // Primary key
+        public Guid Id { get; set; }
+
+        [Required]
+        [MaxLength(100)] // Limit FirstName to 100 characters
         public string FirstName { get; set; }
+
+        [Required]
+        [MaxLength(100)] // Limit LastName to 100 characters
         public string LastName { get; set; }
-        public string Email { get; set; } // Unique identifier
+
+        [Required]
+        [MaxLength(320)] // Email length limited to 320 characters
+        public string Email { get; set; }
+
+        [MaxLength(20)] // Limit PhoneNumber to 20 characters
         public string PhoneNumber { get; set; }
+
+        // Retain MAX length for free-form fields
         public string PreferredCallTime { get; set; }
         public string LinkedInProfile { get; set; }
         public string GitHubProfile { get; set; }
         public string FreeTextComment { get; set; }
+
         public DateTime CreatedAt { get; set; }
-        public DateTime UpdatedAt { get; set; }
+        public DateTime? UpdatedAt { get; set; }
+
     }
 }

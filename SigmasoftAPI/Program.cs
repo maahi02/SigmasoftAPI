@@ -1,6 +1,8 @@
 using Domain.Models;
 using Infrastructure.Content;
 using Infrastructure.Content.Data;
+using Infrastructure.Content.Repository;
+using Infrastructure.Content.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 
@@ -14,6 +16,9 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(connectionString));
+
+builder.Services.AddScoped<IRepository<Candidate>, CandidateRepository>();
+builder.Services.AddScoped<CandidateService>();
 
 
 builder.Services.AddMemoryCache();
@@ -57,6 +62,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
 // Enable CORS
 app.UseCors("*");
 

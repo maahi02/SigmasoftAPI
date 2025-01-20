@@ -28,8 +28,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Content\Repository\" />
-    <Folder Include="Content\Services\" />
     <Folder Include="Middleware\" />
     <Folder Include="Migrations\" />
   </ItemGroup>
