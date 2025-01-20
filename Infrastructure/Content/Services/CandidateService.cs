@@ -1,4 +1,5 @@
-﻿using Application.Dtos;
+﻿using Application.Common.Models;
+using Application.Dtos;
 using Domain.Models;
 using Microsoft.Extensions.Caching.Memory;
 using System;
@@ -20,7 +21,7 @@ namespace Infrastructure.Content.Services
             _cache = cache;
         }
 
-        public async Task<Candidate> GetOrCreateAsync(CandidateDto candidateDto)
+        public async Task<ServiceResult<Candidate>> CreateOrUpdateAsync(CandidateDto candidateDto)
         {
 
             var candidate = new Candidate
@@ -47,6 +48,7 @@ namespace Infrastructure.Content.Services
                 await _repository.AddAsync(candidate);
                 await _repository.SaveChangesAsync();
                 cachedCandidate = candidate;
+                return ServiceResult<Candidate>.SuccessResult("Candidate created successfully", cachedCandidate);
             }
             else
             {
@@ -60,11 +62,57 @@ namespace Infrastructure.Content.Services
                 cachedCandidate.UpdatedAt = DateTime.UtcNow;
                 await _repository.UpdateAsync(cachedCandidate);
                 await _repository.SaveChangesAsync();
+                return ServiceResult<Candidate>.SuccessResult("Candidate created successfully", cachedCandidate);
             }
-            _cache.Set(cacheKey, cachedCandidate, TimeSpan.FromMinutes(2));
+            // _cache.Set(cacheKey, cachedCandidate, TimeSpan.FromMinutes(2));
             //  }  // removed this line for development testing..
-            return cachedCandidate;
         }
+
+        public async Task<ServiceResult<IEnumerable<CandidateGetModelDto>>> GetAllAsync()
+        {
+            string cacheKey = "AllCandidates";
+
+            if (!_cache.TryGetValue(cacheKey, out IEnumerable<Candidate> cachedCandidates))
+            {
+                // If not found in cache, fetch from the repository
+                cachedCandidates = await _repository.GetAllAsync();
+
+                // If no candidates found, return an empty list
+                if (cachedCandidates == null || !cachedCandidates.Any())
+                {
+                    cachedCandidates = new List<Candidate>();
+                }
+
+                // Store the list in cache for 2 minutes
+                _cache.Set(cacheKey, cachedCandidates, TimeSpan.FromMinutes(2));
+            }
+
+            if (cachedCandidates != null && cachedCandidates.Any())
+            {
+
+                // for improvement we can user automapper
+                var result = cachedCandidates.Select(c => new CandidateGetModelDto
+                {
+                    Id = c.Id,
+                    FirstName = c.FirstName,
+                    LastName = c.LastName,
+                    FreeTextComment = c.FreeTextComment,
+                    GitHubProfile = c.GitHubProfile,
+                    LinkedInProfile = c.LinkedInProfile,
+                    PreferredCallTime = c.PreferredCallTime,
+                    Email = c.Email,
+                    PhoneNumber = c.PhoneNumber,
+                });
+                return ServiceResult<IEnumerable<CandidateGetModelDto>>.SuccessResult("Candidates retrieved successfully.", result);
+            }
+            else
+            {
+                return ServiceResult<IEnumerable<CandidateGetModelDto>>.SuccessResult("Candidates Not Found!", new List<CandidateGetModelDto>());
+            }
+
+        }
+
+
     }
 
 }

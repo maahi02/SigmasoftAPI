@@ -9,6 +9,7 @@ namespace Application.Dtos
 {
     public class CandidateDto
     {
+        
         [Required(ErrorMessage = "First name is required.")]
         public  string FirstName { get; set; }
 
@@ -31,5 +32,11 @@ namespace Application.Dtos
 
         [Required(ErrorMessage = "A comment is required.")]
         public string FreeTextComment { get; set; }
+    }
+
+    
+    public class CandidateGetModelDto : CandidateDto
+    {
+        public Guid Id { get; set; }
     }
 }

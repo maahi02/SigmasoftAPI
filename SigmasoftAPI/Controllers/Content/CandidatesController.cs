@@ -17,15 +17,28 @@ namespace SigmasoftAPI.Controllers.Content
             _candidateService = candidateService;
         }
 
+
+        [HttpGet]
+        public async Task<IActionResult> GetAllCandidates()
+        {
+            var candidates = await _candidateService.GetAllAsync();
+            return Ok(candidates);
+        }
+
+
+
         [HttpPost]
         public async Task<IActionResult> AddOrUpdateCandidate([FromBody] CandidateDto candidate)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var result = await _candidateService.GetOrCreateAsync(candidate);
+            var result = await _candidateService.CreateOrUpdateAsync(candidate);
             return Ok(result);
         }
+
+
+
 
     }
 }
