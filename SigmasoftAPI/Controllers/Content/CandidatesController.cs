@@ -26,7 +26,6 @@ namespace SigmasoftAPI.Controllers.Content
         }
 
 
-
         [HttpPost]
         public async Task<IActionResult> AddOrUpdateCandidate([FromBody] CandidateDto candidate)
         {

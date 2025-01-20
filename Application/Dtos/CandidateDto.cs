@@ -34,7 +34,7 @@ namespace Application.Dtos
         public string FreeTextComment { get; set; }
     }
 
-    
+    // if we dont need Id then we dont need to create this class but sometimes as requirement we need to maintain Id for FrontEnd Application.
     public class CandidateGetModelDto : CandidateDto
     {
         public Guid Id { get; set; }

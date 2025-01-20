@@ -90,7 +90,7 @@ namespace Infrastructure.Content.Services
             if (cachedCandidates != null && cachedCandidates.Any())
             {
 
-                // for improvement we can user automapper
+                // for improvement : we can user automapper
                 var result = cachedCandidates.Select(c => new CandidateGetModelDto
                 {
                     Id = c.Id,
