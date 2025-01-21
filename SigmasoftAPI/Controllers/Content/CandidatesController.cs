@@ -1,4 +1,5 @@
 ﻿using Application.Dtos;
+using Application.Interfaces.Content;
 using Domain.Models;
 using Infrastructure.Content.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -11,8 +12,8 @@ namespace SigmasoftAPI.Controllers.Content
     public class CandidatesController : ControllerBase
     {
 
-        private readonly CandidateService _candidateService;
-        public CandidatesController(CandidateService candidateService)
+        private readonly ICandidateService _candidateService;
+        public CandidatesController(ICandidateService candidateService)
         {
             _candidateService = candidateService;
         }

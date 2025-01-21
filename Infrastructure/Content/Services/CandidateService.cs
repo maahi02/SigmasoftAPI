@@ -1,5 +1,6 @@
 ﻿using Application.Common.Models;
 using Application.Dtos;
+using Application.Interfaces.Content;
 using Domain.Models;
 using Microsoft.Extensions.Caching.Memory;
 using System;
@@ -10,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.Content.Services
 {
-    public class CandidateService
+    public class CandidateService : ICandidateService
     {
         private readonly IRepository<Candidate> _repository;
         private readonly IMemoryCache _cache;
@@ -84,7 +85,7 @@ namespace Infrastructure.Content.Services
                 }
 
                 // Store the list in cache for 2 minutes
-                _cache.Set(cacheKey, cachedCandidates, TimeSpan.FromMinutes(2));
+                _cache.Set(cacheKey, cachedCandidates, TimeSpan.FromSeconds(40));
             }
 
             if (cachedCandidates != null && cachedCandidates.Any())

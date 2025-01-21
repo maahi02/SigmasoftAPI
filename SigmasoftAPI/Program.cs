@@ -1,8 +1,10 @@
+using Application.Interfaces.Content;
 using Domain.Models;
 using Infrastructure.Content;
 using Infrastructure.Content.Data;
 using Infrastructure.Content.Repository;
 using Infrastructure.Content.Services;
+using Infrastructure.Middleware;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 
@@ -17,8 +19,12 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(connectionString));
 
+//repo registration
 builder.Services.AddScoped<IRepository<Candidate>, CandidateRepository>();
-builder.Services.AddScoped<CandidateService>();
+
+//service registration
+builder.Services.AddScoped<ICandidateService, CandidateService>();
+//builder.Services.AddScoped<CandidateService>();
 
 
 builder.Services.AddMemoryCache();
@@ -66,6 +72,8 @@ app.UseHttpsRedirection();
 // Enable CORS
 app.UseCors("*");
 
+// Use custom exception middleware
+app.UseMiddleware<GlobalExceptionMiddleware>();
 
 app.UseAuthentication();
 
