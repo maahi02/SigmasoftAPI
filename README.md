@@ -112,7 +112,7 @@ The project employs the following design patterns:
 - Introduce logging to a centralized system like Serilog or Application Insights.
 - Refactor for better compliance with SOLID principles where applicable.
 - Optimize performance of database queries and introduce caching for frequently accessed data.
-- Can user dapper and StoreProcedure queries or database operation.
+- Can use dapper and StoreProcedure for queries or database operation.
 
 
 ## Contact
